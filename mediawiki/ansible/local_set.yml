@@ -3,7 +3,7 @@
   become: yes 
   vars_prompt:
 
-   - name: source path provide by user input
+   - name: src_path
      prompt: "Your LocalSetting.php path (abslute path eg. /tmp/LocalSetting.php)"
      private: no
   
