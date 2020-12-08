@@ -1,0 +1,38 @@
+---
+- hosts: web
+  become: yes 
+  vars:
+  tasks:
+   - name: Apache server setup
+     apt: name={{item}} state=present update_cache=no
+     with_items:
+       - apache2
+  
+     notify: web start
+
+   - name: PHP setup on Apache server
+     apt: name={{item}} state=present update_cache=yes
+     with_items:
+       - php 
+       - php-mysql 
+       - libapache2-mod-php 
+       - php-xml 
+       - php-mbstring
+
+     notify: web restart
+
+   - name: Mediawiki setup
+     shell: cd /tmp/ ; wget https://releases.wikimedia.org/mediawiki/1.34/mediawiki-1.34.2.tar.gz ; tar -xvzf /tmp/mediawiki-*.tar.gz
+
+   - name: Move directory
+     shell: mv /tmp/mediawiki-*/* /var/www/html ; rm -rf /var/www/html/index.html  
+    
+   - name: stopping firewall
+     shell: service ufw stop
+     
+
+  handlers:
+   - name: web start
+     service: name=apache2 state=started enabled=yes
+   - name: web restart
+     service: name=apache2 state=restarted enabled=yes
