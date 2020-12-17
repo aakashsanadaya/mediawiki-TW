@@ -65,7 +65,7 @@ variable "user_data" {
 
 variable "key_aws" {
   type        = string
-  default     = "dev-deployer"
+  default     = "dev-deplover"
 }
 
 
