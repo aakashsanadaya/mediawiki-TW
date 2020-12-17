@@ -4,7 +4,7 @@ echo -e "\n"|ssh-keygen -t rsa -f /tmp/id_rsa -N ""
 
 chmod 600 /tmp/id_rsa
 
-terraform init && terraform apply -auto-approve
+terraform init && terraform validate && terraform plan && terraform apply -auto-approve
 
 export mysql_ip=$(cat private_ip.txt |grep mysql | awk '{ print $5 }'|sed 's/.*=//')
 
